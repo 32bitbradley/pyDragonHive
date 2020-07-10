@@ -4,7 +4,9 @@ A python script to send Wazuh alerts to TheHive, adding observables, tags and al
 
 You can pass data to this script via CLI arguments.
 
-### Deployment
+Events can also be whitelisted, preventing them from creating alerts.
+
+# Deployment
 
 **Dependencies**
 * Python36
@@ -40,15 +42,41 @@ All the below fields should be passed as a string, their associated fields are s
 
 The script will use one of the source IP fields, taking the first that matches in the order data_data_srcip, data_data_web_srcip or data_data_eventchannel_srcip. If matched, this field will be validated using the socket library to check that it is a valid IP address.
   
-### Observables
+# Observables
 
 The script will attempt to generate and add observables for
 
 * Agent IP with tags for Agent Name, Agent ID
 * FIM sha256 with tags for sha256_after (Will only be added for FIM alerts)
 
+# Whitelisting alerts
 
-### The alert in the hive will follow the below format
+Alerts can be whitelisted to prevent them from generating a Hive alert, useful for trigger happy agents.
+
+To do this, add a the below whitelist JSON string to the file, making sure each new line is a new wgitelist JSON string
+
+```
+{"agent_id":"AGENT_ID","rule_id":"RULE_ID","source_up":"SOURCE_IP","full_log_regex":"REGEX"}
+```
+
+| Key | Value(s) |
+| ------|------|
+|agent_id|A Wazuh agent ID|
+|rule_id|'all' or a Wazuh rule ID|
+|source_ip|'all' or a source IP address|
+|full_log_regex| 'all' or any regex string to be evaluated against the full_log|
+
+For example, a whitelist file may look like the below
+
+```
+{"agent_id":"073","rule_id":"3310","source_up":"1.1.1.1","full_log_regex":"all"}
+{"agent_id":"075","rule_id":"all","source_up":"all,"full_log_regex":".log$"}
+{"agent_id":"010","rule_id":"all","source_up":"1.1.1.1","full_log_regex":"all"}
+```
+
+The whitelist if any ONE of the whitelists (Rule ID, source IP or regex) match, the event will be classed as whitelisted. 
+
+# The alert in the hive will follow the below format
 
 ## Wazuh Alert
 
