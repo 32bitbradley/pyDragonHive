@@ -117,7 +117,7 @@ def GenerateHiveAlert(agent_id, agent_name, agent_ip, rule_description, rule_id,
         artifact_agentIP["dataType"] = "ip"
         artifact_agentIP["data"] = agent_ip
         artifact_agentIP["tags"] = []
-        artifact_agentIP["tags"].append("Type: gent_ip")
+        artifact_agentIP["tags"].append("Type: agent_ip")
         artifact_agentIP["tags"].append(f"ID: {agent_id}")
         artifact_agentIP["tags"].append(f"Name: {agent_name}")
         artifact_srcip = None
