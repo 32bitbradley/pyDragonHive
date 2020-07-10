@@ -1,4 +1,4 @@
-#pyDragonHive
+# pyDragonHive
 
 A python script to send Wazuh alerts to TheHive, adding observables, tags and alert metadata.
 
